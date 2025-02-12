@@ -77,7 +77,7 @@ class EVMForPY:
         self.storage = {} # 存储初始化为空字典
 
         self.current_block = {
-             "blockhash": 0x6827123fc877fe753b3122dc592671b4902ebf2b325dd2c7224a43c0cbeee3tr,
+             "blockhash": 0x6827123fc877fe753b3122dc592671b4902ebf2b325dd2c7224a43c0cbeee398,
             "coinbase": 0x699C818CA8B9251b393131C08a736A67ccB19356,
             "timestamp": 1739363186,
             "number": 173936312,
