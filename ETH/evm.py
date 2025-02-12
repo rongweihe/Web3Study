@@ -67,3 +67,34 @@ BASEFEE = 0x48
 
 # 实现一个简易版本的 EVM （以太坊虚拟机）
 class EVMForPY:
+    def __init__(self, code):
+        self.stack = [] # 堆栈初始为空
+        self.memory = bytearray(1024) # 内存初始化为1024字节
+        self.call_stack = []
+        self.return_data = []
+        self.pc = 0 # 初始化程序计数器为0
+        self.code =code # 初始化字节码，bytes对象
+        self.storage = {} # 存储初始化为空字典
+
+        self.current_block = {
+             "blockhash": 0x7527123fc877fe753b3122dc592671b4902ebf2b325dd2c7224a43c0cbeee3ca,
+            "coinbase": 0x388C818CA8B9251b393131C08a736A67ccB19297,
+            "timestamp": 1625900000,
+            "number": 17871709,
+            "prevrandao": 0xce124dee50136f3f93f19667fb4198c6b94eecbacfa300469e5280012757be94,
+            "gaslimit": 30,
+            "chainid": 1,
+            "selfbalance": 100,
+            "basefee": 30,
+        }
+        # 为了让极简EVM支持账户相关的指令，我们利用dict做一个简单账户数据库：
+        self.account_db = {
+            '0x9bbfed6889322e016e0a02ee459d306fc19545d8': {
+                'balance': 100, # wei
+                'nonce': 1, 
+                'storage': {},
+                'code': b'\x60\x00\x60\x00'  # Sample bytecode (PUSH1 0x00 PUSH1 0x00)
+            },
+            # ... 其他账户数据 ...
+        }
+
