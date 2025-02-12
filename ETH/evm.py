@@ -160,3 +160,29 @@ class EVMForPY:
     def ret(self, offset, length):
         self.return_data = self.memory[offset:offset+length]
 
+    # 在真实场景中, 你会需要访问历史的区块hash
+    # 这里我们只是简单地返回当前区块的hash
+    def blockhash(self):
+        if len(self.stack) < 1:
+            raise Exception('Stack underflow')
+        number = self.stack.pop()
+        if number == self.current_block['number']:
+            self.stack.append(self.current_block['blockhash'])
+        else:
+            self.stack.append(0)# 如果不是当前块，返回0
+
+    # COINBASE: 将当前区块的coinbase（矿工/受益人）地址压入堆栈，它的操作码为0x41，gas消耗为2。
+    def coinbase(self):
+        self.stack.append(self.current_block["coinbase"])
+    
+    # TIMESTAMP: 将当前区块的时间戳压入堆栈，它的操作码为0x42，gas消耗为2。
+    def timestamp(self):
+        self.stack.append(self.current_block["timestamp"])
+    
+    # NUMBER: 将当前区块高度压入堆栈，它的操作码为0x43，gas消耗为2。
+    def number(self):
+        self.stack.append(self.current_block["number"])
+    
+    # gaslimit
+    def gaslimit(self):
+        self.stack.append(self.current_block["gaslimit"])
