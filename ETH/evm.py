@@ -234,3 +234,13 @@ class EVMForPY:
         # 将stack中的int转换为bytes，然后再转换为十六进制字符串，用于在账户数据库中查询
         addr_str = '0x' + addr_int.to_bytes(20, byteorder='big').hex()
         self.stack.append(self.account_db.get(addr_str, {}).get('balance', 0))
+
+
+    # EXTCODESIZE 指令用于返回某个账户的代码长度（以字节为单位）。它从堆栈中弹出一个地址，然后查询该地址的代码长度并压入堆栈。如果账户不存在或没有代码，返回0。他的操作码为0x3B，gas为2600（cold address）或100（warm address）。
+    def extcodesize(self):
+        if len(self.stack) < 1:
+            raise Exception('Stack underflow')
+        addr_int = self.stack.pop()
+        # 将stack中的int转换为bytes，然后再转换为十六进制字符串，用于在账户数据库中查询
+        addr_str = '0x' + addr_int.to_bytes(20, byteorder='big').hex()
+        self.stack.append(len(self.account_db.get(addr_str, {}).get('code', b'')))
