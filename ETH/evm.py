@@ -328,3 +328,49 @@ class EVMForPY:
         b = self.stack.pop()
         self.stack.append(a ^ b)
 
+
+    def stop(self):
+        print('Program has been stopped')
+        return
+    
+    # JUMPDEST指令标记一个有效的跳转目标位置，不然无法使用JUMP和JUMPI进行跳转。它的操作码是0x5b，gas消耗为1。
+    # 但是0x5b有时会作为PUSH的参数（详情可看黄皮书中的9.4.3. Jump Destination Validity），所以需要在运行代码前，筛选字节码中有效的JUMPDEST指令，使用ValidJumpDest 来存储有效的JUMPDEST指令所在位置。
+    def findValidJumpDestinations(self):
+        pc = 0
+        while pc < len(self.code):
+            op = self.code[pc]
+            if op == JUMPDEST:
+                self.validJumpDest[pc] = True
+            elif op >= PUSH1 and op <= PUSH32:
+                pc += op - PUSH1 + 1
+            pc += 1
+
+    def jumpdest(self):
+        pass
+
+    # JUMP指令用于无条件跳转到一个新的程序计数器位置。它从堆栈中弹出一个元素，将这个元素设定为新的程序计数器（pc）的值。操作码是0x56，gas消耗为8。
+    def jump(self):
+        if len(self.stack) < 1:
+            raise Exception('Stack underflow')
+        dest = self.stack.pop()
+        if dest not in self.validJumpDest:
+            raise Exception('Invalid jump destination')
+        else: self.pc = dest
+
+    # JUMPI指令用于条件跳转，它从堆栈中弹出两个元素，如果第二个元素（条件，condition）不为0，那么将第一个元素（目标，destination）设定为新的pc的值。操作码是0x57，gas消耗为10。
+    def jumpi(self):
+        if len(self.stack) < 2:
+            raise Exception('Stack underflow')
+        destination = self.stack.pop()
+        condition = self.stack.pop()
+        if condition != 0:
+            if destination not in self.validJumpDest:
+                raise Exception('Invalid jump destination')
+            else:  self.pc = destination
+
+    # NOT指令从堆栈中弹出一个元素，对它进行位非运算，并将结果推入堆栈。操作码是0x19，gas 消耗为3。
+    def not_op(self):
+        if len(self.stack) < 1:
+            raise Exception('Stack underflow')
+        a = self.stack.pop()
+        self.stack.append(~a)
