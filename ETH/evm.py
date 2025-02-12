@@ -374,3 +374,106 @@ class EVMForPY:
             raise Exception('Stack underflow')
         a = self.stack.pop()
         self.stack.append(~a)
+
+    def execute(self, code):
+        for instruction in code:
+            if instruction[0] == 'PUSH':
+                self.push(instruction[1])
+            elif instruction[0] == 'POP':
+                self.pop()
+            elif instruction[0] == 'MLOAD':
+                self.mload(instruction[1])
+            elif instruction[0] == 'MSTORE':
+                self.mstore(instruction[1], instruction[2])
+            elif instruction[0] == 'CALL':
+                self.call(instruction[1], instruction[2], instruction[3], instruction[4])
+            elif instruction[0] == 'RET':
+                self.ret(instruction[1], instruction[2])
+        return self.return_data 
+
+    # 获取下一条指令
+    def next_instruction(self):
+        op = self.code[self.pc]
+        self.pc += 1
+        return op
+    
+    def run(self):
+        while self.pc < len(self.code):
+            op = self.next_instruction()
+            if PUSH1 <= op <= PUSH32: # 如果为PUSH1-PUSH32
+                size = op - PUSH1 + 1
+                self.push(size)
+            elif op == PUSH0: # 如果为PUSH0
+                self.stack.append(0)
+            elif op == POP: # 如果为POP
+                self.pop()
+            elif op == ADD: # 如果为ADD
+                self.add()
+            elif op == SUB: # 如果为SUB
+                self.sub()
+            elif op == MUL: # 如果为MUL
+                self.mul()
+            elif op == DIV: # 如果为DIV
+                self.div()
+            elif op == LT: # 处理LT指令
+                self.lt()
+            elif op == GT: # 处理GT指令
+                self.gt()
+            elif op == EQ: # 处理EQ指令
+                self.eq()
+            elif op == AND: # 处理AND指令
+                self.and_op()
+            elif op == OR: # 处理OR指令
+                self.or_op()
+            elif op == NOT: # 处理NOT指令
+                self.not_op()
+            elif op == XOR: # 处理XOR指令
+                self.xor_op()
+
+            elif op == MSTORE: # 处理MSTORE指令
+                self.mstore()
+
+            elif op == MLOAD: # 处理MLOAD指令
+                self.mload()
+            elif op == SSTORE: # 处理SSTORE指令
+                self.sstore()
+            elif op == SLOAD: # 处理SLOAD指令
+                self.sload()
+
+            elif op == JUMP: 
+                self.jump()
+            elif op == JUMPDEST: 
+                self.jumpdest()
+
+            elif op == JUMPI: 
+                self.jumpi()
+
+            elif DUP1 <= op <= DUP16: # 处理DUP1-DUP16指令
+                self.dup(op - DUP1 + 1)
+
+            elif SWAP1 <= op <= SWAP16: # 如果是SWAP1-SWAP16
+                self.swap(op - SWAP1 + 1)
+
+            elif op == SHA3: # 如果为SHA3
+                self.sha3()
+
+            elif op == STOP: # 处理STOP指令
+                print('Program has been stopped')
+                break
+
+if __name__ == '__main__':
+    
+    # add 1+1
+    # code = b"\x60\x01\x60\x01" 
+    # # （PUSH1 1 PUSH1 1）
+    # evm = EVMForPY(code)
+    # evm.run()
+    # print(evm.stack) 
+    # output: [1, 1]
+
+    # add 2+3 （PUSH1 2 PUSH1 3 ADD）
+    code = b"\x60\x02\x60\x03\x01"
+    evm = EVMForPY(code)
+    evm.run()
+    print(evm.stack)
+    # output: [5]
