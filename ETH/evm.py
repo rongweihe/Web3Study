@@ -186,3 +186,25 @@ class EVMForPY:
     # gaslimit
     def gaslimit(self):
         self.stack.append(self.current_block["gaslimit"])
+
+
+    # 在EVM中，DUP是一系列的指令，总共有16个，从DUP1到DUP16，操作码范围为0x80到0x8F，gas消耗均为3。这些指令用于复制（Duplicate）堆栈上的指定元素（根据指令的序号）到堆栈顶部。例如，DUP1复制栈顶元素，DUP2复制距离栈顶的第二个元素，以此类推。
+    def dup(self, n):
+        if len(self.stack) < n:
+            raise Exception('Stack underflow')
+        val = self.stack[-n]
+        self.stack.append(val)
+
+    # SWAP指令用于交换堆栈顶部的两个元素。与DUP类似，SWAP也是一系列的指令，从SWAP1到SWAP16共16个，操作码范围为0x90到0x9F，gas消耗均为3。SWAP1交换堆栈的顶部和次顶部的元素，SWAP2交换顶部和第三个元素，以此类推。
+    def swap(self, position):
+        if len(self.stack) < position + 1:
+            raise Exception('Stack underflow')
+        idx1, idx2 = -1, -position - 1
+        self.stack[idx1], self.stack[idx2] = self.stack[idx2], self.stack[idx1]
+    
+    # SWAP1
+    # code = b"\x60\x01\x60\x02\x90"
+    # evm = EVM(code)
+    # evm.run()
+    # print(evm.stack)  
+    # # output: [2, 1]
