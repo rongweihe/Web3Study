@@ -137,3 +137,26 @@ class EVMForPY:
     # MSIZE指令将当前的内存大小（以字节为单位）压入堆栈。操作码是0x59，gas消耗为2。
     def msize(self):
         self.stack.append(len(self.memory))
+
+    # SSTORE (存储写)
+    # SSTORE指令用于将一个256位（32字节）的值写入到存储。它从堆栈中弹出两个元素，第一个元素为存储的地址（key），第二个元素为存储的值（value）。操作码是0x55，gas消耗根据实际改变的数据计算（下面给出）。
+    def sstore(self, slot, value):
+        if len(self.stack) < 2:
+            raise Exception('Stack underflow')
+        key = self.stack.pop()
+        value = self.stack.pop()
+        self.storage[key] = value
+
+    # SLOAD指令从存储中读取一个256位（32字节）的值并推入堆栈。它从堆栈中弹出一个元素，从该元素表示的存储槽中加载值，并将其推入堆栈。操作码是0x54，gas消耗后面给出。
+    def ssload(self, slot):
+        if len(self.stack) < 1:
+            raise Exception('Stack underflow')
+        key = self.stack.pop()
+        value = self.storage.get(key, 0)
+        self.stack.append(value)
+        
+    def call(self, address, gas, value, data):
+        self.call_stack.append((address, gas, value, data))
+    def ret(self, offset, length):
+        self.return_data = self.memory[offset:offset+length]
+
