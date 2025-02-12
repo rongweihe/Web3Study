@@ -244,3 +244,87 @@ class EVMForPY:
         # 将stack中的int转换为bytes，然后再转换为十六进制字符串，用于在账户数据库中查询
         addr_str = '0x' + addr_int.to_bytes(20, byteorder='big').hex()
         self.stack.append(len(self.account_db.get(addr_str, {}).get('code', b'')))
+
+
+    def add(self):
+        if len(self.stack) < 2:
+            raise Exception('Stack underflow')
+        a = self.stack.pop()
+        b = self.stack.pop()
+        res = (a+b)%(2**256)# 加法结果需要模2^256，防止溢出
+        self.stack.append(res)
+
+
+    def sub(self):
+        if len(self.stack) < 2:
+            raise Exception('Stack underflow')
+        a = self.stack.pop()
+        b = self.stack.pop()
+        res = (a-b)%(2**256)# 减法结果需要模2^256，防止溢出
+        self.stack.append(res)
+
+    def mul(self):
+        if len(self.stack) < 2:
+            raise Exception('Stack underflow')
+        a = self.stack.pop()
+        b = self.stack.pop()
+        res = (a*b)%(2**256)# 乘法结果需要模2^256，防止溢出
+        self.stack.append(res)
+
+    def div(self):
+        if len(self.stack) < 2:
+            raise Exception('Stack underflow')
+        a = self.stack.pop()
+        b = self.stack.pop()
+        if b == 0:
+            res = 0
+        else:
+            res = (a // b)%(2**256)# 除法结果需要模2^256，防止溢出
+        self.stack.append(res)
+
+
+    def lt(self):
+        if len(self.stack) < 2:
+            raise Exception('Stack underflow')
+        a = self.stack.pop()
+        b = self.stack.pop()
+        self.stack.append(int(b < a)) # 注意这里的比较顺序
+
+    def gt(self):
+        if len(self.stack) < 2:
+            raise Exception('Stack underflow')
+        a = self.stack.pop()
+        b = self.stack.pop()
+        self.stack.append(int(b > a)) # 注意这里的比较顺序
+
+    def eq(self):
+        if len(self.stack) < 2:
+            raise Exception('Stack underflow')
+        a = self.stack.pop()
+        b = self.stack.pop()
+        self.stack.append(int(a == b))
+    
+    # AND指令从堆栈中弹出两个元素，对它们进行位与运算，并将结果推入堆栈。操作码是0x16，gas 消耗为3。
+    def and_op(self):
+        if len(self.stack) < 2:
+            raise Exception('Stack underflow')
+        a = self.stack.pop()
+        b = self.stack.pop()
+        self.stack.append(a & b)
+    
+    # OR指令从堆栈中弹出两个元素，对它们进行位或运算，并将结果推入堆栈。操作码是0x17，gas 消耗为3。
+    def or_op(self):
+        if len(self.stack) < 2:
+            raise Exception('Stack underflow')
+        a = self.stack.pop()
+        b = self.stack.pop()
+        self.stack.append(a | b)
+
+    # XOR指令与AND和OR指令类似，但执行的是异或运算。操作码是0x18，gas 消耗为3。
+    def xor_op(self):
+        if len(self.stack) < 2:
+            raise Exception('Stack underflow')
+        a = self.stack.pop()
+        b = self.stack.pop()
+        self.stack.append(a ^ b)
+
