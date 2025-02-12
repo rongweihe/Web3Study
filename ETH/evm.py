@@ -208,3 +208,29 @@ class EVMForPY:
     # evm.run()
     # print(evm.stack)  
     # # output: [2, 1]
+
+
+    def sha3(self):
+        if len(self.stack) < 2:
+            raise Exception('Stack underflow')
+        offset = self.pop()
+        size = self.pop()
+        data = self.memory[offset:offset+size]  # 从内存中获取数据
+        hash_value = int.from_bytes(sha3.keccak_256(data).digest(), 'big')  # 计算哈希值
+        self.stack.append(hash_value)  # 将哈希值压入堆栈
+
+    # SHA3
+    # code = b"\x5F\x5F\x20"
+    # evm = EVM(code)
+    # evm.run()
+    # print(hex(evm.stack[-1]))  # 打印出0的keccak256 hash
+    # # output: 0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470
+
+    # BALANCE 指令用于返回某个账户的余额。它从堆栈中弹出一个地址，然后查询该地址的余额并压入堆栈。它的操作码是0x31，gas为2600（cold address）或100（warm address）。
+    def balance(self):
+        if len(self.stack) < 1:
+            raise Exception('Stack underflow')
+        addr_int = self.stack.pop()
+        # 将stack中的int转换为bytes，然后再转换为十六进制字符串，用于在账户数据库中查询
+        addr_str = '0x' + addr_int.to_bytes(20, byteorder='big').hex()
+        self.stack.append(self.account_db.get(addr_str, {}).get('balance', 0))
