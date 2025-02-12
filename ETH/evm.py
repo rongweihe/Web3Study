@@ -98,3 +98,42 @@ class EVMForPY:
             # ... 其他账户数据 ...
         }
 
+    # PC指令将当前的程序计数器（pc）的值压入堆栈。操作码为0x58，gas消耗为2。
+    def pc(self):
+        self.stack.append(self.pc)
+    
+    def push(self, size):
+        data = self.code[self.pc:self.pc + size] # 按照size从code中获取数据
+        value = int.from_bytes(data, 'big') # 将bytes转换为int
+        self.stack.append(value) # 压入堆栈
+        self.pc += size # pc增加size单位
+    
+    def pop(self):
+        return self.stack.pop()
+
+    # MLOAD指令从内存中加载一个256位的值并推入堆栈。它从堆栈中弹出一个元素，从该元素表示的内存地址中加载32字节，并将其推入堆栈。操作码是0x51，gas消耗根据实际内存使用情况计算（3+X）。
+    def mload(self, offset):
+        if len(self.stack) < 1:
+            raise Exception('Stack underflow')
+        offset = self.stack.pop()
+        while len(self.memory) < offset + 32:
+            self.memory.append(0) # 扩展内存
+        
+        value = int.from_bytes(self.memory[offset:offset+32], 'big') # 从内存中加载数据
+        self.stack.append(value) # 压入堆栈
+    
+    #内存写 将一个 256位的值存储到内存中，从堆栈中弹出两个元素，第一个元素内存地址（偏移量 offset）;第二个元素存储的值，操作码是0x52，gas 消耗为3。
+    def mstore(self, offset, value):
+        if len(self.stack) < 2:
+            raise Exception('Stack underflow')
+
+        offset = self.stack.pop()
+        value = self.stack.pop()
+
+        while len(self.memory) < offset + 32:
+            self.memory.append(0) # 扩展内存  
+        self.memory[offset:offset+32] = value.to_bytes(32, 'big') # 存储数据  
+
+    # MSIZE指令将当前的内存大小（以字节为单位）压入堆栈。操作码是0x59，gas消耗为2。
+    def msize(self):
+        self.stack.append(len(self.memory))
