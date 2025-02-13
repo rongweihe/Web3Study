@@ -65,7 +65,6 @@ contract NFTSwap is IERC721Receiver {
 
 ## 交易
 合约实现了 4 个交易相关的函数:
-
 - 挂单 list(): 卖家创建 NFT 并创建订单，并释放 List 事件。参数为 NFT 合约地址_nftAddr，NFT 对应的 _tokenId，挂单价格 _price（注意：单位是wei ）。成功后，NFT 会从卖家转到 NFTSwap 合约中。
 
 ```solidity
@@ -84,8 +83,7 @@ function list(address _nftAddr, uint256 _tokenId, uint256 _price) public {
 }
 ```
 
-- 撤单 revoke(): 卖家撤单，释放 Revoke 事件。参数为 NFT 合约地址_nftAddr，NFT 对应的 _tokenId。成功后，NFT 会从 NFTSwap 合约中释放到卖家的钱包中。
-  
+-  撤单 revoke(): 卖家撤单，释放 Revoke 事件。参数为 NFT 合约地址_nftAddr，NFT 对应的 _tokenId。成功后，NFT 会从 NFTSwap 合约中释放到卖家的钱包中。
 ```solidity
 // 撤单： 卖家取消挂单
 function revoke(address _nftAddr, uint256 _tokenId) public {
@@ -101,5 +99,51 @@ function revoke(address _nftAddr, uint256 _tokenId) public {
 
     // 释放 Revoke 事件
     emit Revoke(msg.sender, _nftAddr, _tokenId);
+}
+```
+
+- 修改价格 update(): 卖家修改订单价格，释放 Update 事件。参数为 NFT 合约地址_nftAddr，NFT 对应的 _tokenId，修改后的价格 _newPrice（注意：单位是wei ）。
+```solidity
+// 修改价格 卖家调整挂单价格
+function update(address _nftAddr, uint256 _tokenId, uint256 _newPrice) public {
+    require(_newPrice > 0, "Invalid Price"); // price > 0
+    Order storage _order = nftList[_nftAddr][_tokenId];
+    require(_order.owner == msg.sender, "Not Owner"); // 必须是订单的owner
+
+    IERC721 _nft = IERC721(_nftAddr); // 声明IERC721接口合约变量
+    // 必须当前 NFT 在合约中
+    require(_nft.ownerOf(_tokenId) == address(this), "Not in Contract"); 
+
+    _order.price = _newPrice; // 修改价格
+    // 释放 Update 事件
+    emit Update(msg.sender, _nftAddr, _tokenId, _newPrice);
+}
+```
+
+- 购买 purchase(): 买家购买 NFT，释放 Purchase 事件。参数为 NFT 合约地址_nftAddr，NFT 对应的 _tokenId。成功后，NFT 会从 NFTSwap 合约中释放到买家的钱包中。
+```solidity
+// 购买： 买家购买NFT  调用函数时要附带ETH
+function purchase(address _nftAddr, uint256 _tokenId) public payable {
+    Order storage _order = nftList[_nftAddr][_tokenId];
+    require(_order.price > 0, "Not for Sale"); // 必须有挂单
+    require(msg.value >= _order.price, "Not Enough Money"); // 必须有足够的钱
+
+    IERC721 _nft = IERC721(_nftAddr); // 声明IERC721接口合约变量
+    // 必须当前 NFT 在合约中
+    require(_nft.ownerOf(_tokenId) == address(this), "Not in Contract");
+
+    // 释放 NFT 给买家
+    _nft.safeTransferFrom(address(this), msg.sender, _tokenId);
+
+    // 将 ETH 转给卖家
+    payable(_order.owner).transfer(_order.price);
+    if (msg.value > _order.price) {
+        // 多余 ETH 给买家退款
+        payable(msg.sender).transfer(msg.value - _order.price);
+    }
+
+    // 释放 Purchase 事件
+    emit Purchase(msg.sender, _nftAddr, _tokenId, _order.price);
+    delete nftList[_nftAddr][_tokenId]; // 清空订单信息 
 }
 ```
