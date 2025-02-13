@@ -4,6 +4,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ### 运行前准备
 
+- 更新 node_modules
+
 - 替换你的合约地址 和 ABI.json
 
 ```c
