@@ -1,4 +1,10 @@
-# Getting Started with Create React App
+# 去中心化 Bank Dapp 
+
+项目描述：
+
+- 去中心化的链上银行 DAPP，允许用户通过 MetaMask 钱包与智能合约进行交互，实现存款、取款和转账功能；
+- 前端使用 React 和 Web3.js 构建，后端
+- 基于 Solidity 智能合约，部署在以太坊测试网。该项目旨在提供一个安全、透明且易于 使用的金融平台，利用区块链技术确保交易的不可篡改和去中心化特性。
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
