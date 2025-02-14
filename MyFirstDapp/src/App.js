@@ -46,17 +46,17 @@ function App() {
   }
 
   const connectWallet = async () => {
-    // 1.获取钱包账户
+    // 1.获取钱包账户 设置全局变量钱包地址
     const accounts = await window.ethereum.request({
       method: 'eth_requestAccounts',
     });
     setAddress(accounts[0]);
 
-    // 2. 连接web3
+    // 2. 连接web3 通过 currentProvider 方法
     const web3 = new Web3(window.web3.currentProvider);
     setWeb3(web3);
 
-    // 3. 获取智能合约 ABI + address
+    // 3. 获取智能合约 ABI + address ；后通过合约操作合约的函数进行功能处理
     const bankContract = new web3.eth.Contract(ABI, '0xdFc1e783cFfE018Dce6A1e80f1fAeF42Ecdb2959');
     setBankContract(bankContract);
   }
