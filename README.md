@@ -1,7 +1,7 @@
 # Web3Study
 web3 study Programming
 
-在这里分享个人 Solidity 学习笔记，欢迎讨论，互相进步
+在这里分享个人学习 Web3 相关知识，包括不限于 Solidity 、ETH EVM 源码底层原理、Web3.js、Ethers.js等 学习笔记，欢迎讨论，互相进步
 
 ## Solidity 简介
 
