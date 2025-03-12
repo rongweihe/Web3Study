@@ -185,3 +185,15 @@ EVM中与账户（Account）相关的4个指令，包括
 - EXTCODEHASH：返回某个账户的代码的Keccak256哈希值。
 
 我们能利用这些指令获取以太坊账户的信息。
+
+## 14.ETH 共识算法
+
+截至2025年3月12日，以太坊最新的版本采用的是权益证明（Proof-of-Stake, PoS）共识算法，具体为基于Casper协议的改进版本，并随着布拉格升级（Pectra Upgrade）进一步优化了验证者体验和网络效率。
+
+以太坊的共识机制经历了从工作量证明（PoW）向权益证明（PoS）的过渡：
+
+- 早期阶段（PoW）：Frontier、Homestead、Metropolis（拜占庭与君士坦丁堡）等版本均采用PoW算法，依赖算力竞争出块68。
+
+- 混合阶段（PoW+PoS）：在Serenity（宁静）阶段的早期规划中，曾尝试混合共识机制，为完全转向PoS做准备。
+
+- 完全PoS（Casper协议）：2022年完成“合并”（The Merge）后，以太坊主网正式从PoW转向PoS，采用Casper协议管理验证者节点，并通过信标链（Beacon Chain）协调分片链与验证者分配
