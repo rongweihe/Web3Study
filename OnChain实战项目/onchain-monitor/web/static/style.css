@@ -1,0 +1,41 @@
+body {
+    font-family: sans-serif;
+    margin: 20px;
+    background: #f6f8fa;
+  }
+  
+  h1 {
+    color: #333;
+    text-align: center;
+  }
+  
+  .tabs {
+    text-align: center;
+    margin-bottom: 15px;
+  }
+  
+  button {
+    margin: 5px;
+    padding: 8px 15px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 6px;
+  }
+  
+  table {
+    margin: auto;
+    border-collapse: collapse;
+  }
+  
+  td, th {
+    border: 1px solid #ccc;
+    padding: 6px 12px;
+  }
+  
+  footer {
+    text-align: center;
+    margin-top: 30px;
+    color: #888;
+  }
+  
