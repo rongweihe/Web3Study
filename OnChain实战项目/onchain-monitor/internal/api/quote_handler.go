@@ -9,5 +9,5 @@ import (
 
 func GetRandomQuote(c echo.Context) error {
 	quote := utils.GetRandomQuote()
-	return c.JSON(http.StatusOK, map[string]string{"quote": quote})
+	return c.JSON(http.StatusOK, quote)
 }

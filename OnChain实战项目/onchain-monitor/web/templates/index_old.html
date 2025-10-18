@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>区块链监控系统</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <h1>区块链链上监控系统</h1>
+  <div class="tabs">
+    <button onclick="openTab('price')">价格监控</button>
+    <button onclick="openTab('system')">系统状态</button>
+    <button onclick="openTab('quotes')">投资金句</button>
+  </div>
+
+  <div id="price" class="tab">
+    <h2>主流币价格</h2>
+    <table id="priceTable"></table>
+  </div>
+
+  <div id="system" class="tab" style="display:none;">
+    <h2>系统状态</h2>
+    <pre id="sysinfo"></pre>
+  </div>
+
+  <div id="quotes" class="tab" style="display:none;">
+    <h2>今日金句</h2>
+    <blockquote id="quote"></blockquote>
+  </div>
+
+  <footer>
+    <p id="time"></p>
+  </footer>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>

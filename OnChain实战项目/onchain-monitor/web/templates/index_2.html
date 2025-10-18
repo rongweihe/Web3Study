@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>链上监控仪表盘</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>区块链链上监控系统 · MVP</h1>
+      <p class="muted">实时展示：主流币价格、系统状态、投资金句；下方展示 ETH 大额转账 Top5。</p>
+    </header>
+
+    <main class="dashboard">
+      <section class="card" id="card-prices">
+        <h2>💰 主流币价格</h2>
+        <div id="price-content">
+          <div class="placeholder">加载中…</div>
+        </div>
+      </section>
+
+      <section class="card" id="card-system">
+        <h2>🖥️ 系统状态</h2>
+        <div id="system-content">
+          <div class="placeholder">加载中…</div>
+        </div>
+      </section>
+
+      <section class="card" id="card-quote">
+        <h2>📜 投资金句</h2>
+        <div id="quote-content">
+          <div class="placeholder">加载中…</div>
+        </div>
+      </section>
+    </main>
+
+    <section class="card transfers" id="card-transfers">
+      <h2>🔍 最近大额 ETH 转账 Top5</h2>
+      <table class="transfer-table" id="transfer-table">
+        <thead>
+          <tr><th>地址</th><th>金额 (ETH)</th><th>时间</th></tr>
+        </thead>
+        <tbody id="transfer-body">
+          <tr><td colspan="3" class="placeholder">加载中…</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <footer>
+      <div id="last-update">最后更新时间: --</div>
+    </footer>
+  </div>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>

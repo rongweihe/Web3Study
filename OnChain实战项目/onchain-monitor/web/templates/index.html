@@ -1,37 +1,65 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <title>区块链监控系统</title>
-  <link rel="stylesheet" href="/static/style.css">
+    <meta charset="UTF-8">
+    <title>链上监控系统</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-  <h1>区块链链上监控系统</h1>
-  <div class="tabs">
-    <button onclick="openTab('price')">价格监控</button>
-    <button onclick="openTab('system')">系统状态</button>
-    <button onclick="openTab('quotes')">投资金句</button>
-  </div>
+    <div class="container">
 
-  <div id="price" class="tab">
-    <h2>主流币价格</h2>
-    <table id="priceTable"></table>
-  </div>
+        <h1>📊 区块链链上监控系统</h1>
+        <p class="timestamp" id="last_update">最后更新时间: 加载中...</p>
 
-  <div id="system" class="tab" style="display:none;">
-    <h2>系统状态</h2>
-    <pre id="sysinfo"></pre>
-  </div>
+        <!-- 第一行：三个模块并列 -->
+        <div class="grid">
+            <!-- 主流币价格 -->
+            <div class="card">
+                <h2>💰 主流币价格</h2>
+                <table id="price-table">
+                    <thead>
+                        <tr><th>币种</th><th>价格 (USDT)</th></tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
 
-  <div id="quotes" class="tab" style="display:none;">
-    <h2>今日金句</h2>
-    <blockquote id="quote"></blockquote>
-  </div>
+            <!-- 系统状态 -->
+            <div class="card">
+                <h2>🖥️ 系统状态</h2>
+                <table id="system-table">
+                    <thead>
+                        <tr><th>指标</th><th>数值</th></tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <!-- 投资金句 -->
+            <div class="card">
+                <h2>💬 投资金句</h2>
+                <div id="quote-content" class="quote-box">加载中...</div>
+            </div>
+        </div>
+
+
+    <!-- 第二行：ETH 大额转账 Top5 单独显示 -->
+     <div class="grid-single">
+        <div class="card">
+            <h2>💎 ETH 大额转账 Top5</h2>
+            <table id="tx-table">
+                <thead>
+                    <tr><th>From</th><th>To</th><th>数量(ETH)</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
 
   <footer>
-    <p id="time"></p>
+    <p id="last_update"></p>
   </footer>
 
-  <script src="/static/script.js"></script>
+    <script src="/static/script.js"></script>
 </body>
 </html>

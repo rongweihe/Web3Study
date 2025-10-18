@@ -1,41 +1,68 @@
 body {
-    font-family: sans-serif;
-    margin: 20px;
-    background: #f6f8fa;
-  }
-  
-  h1 {
-    color: #333;
-    text-align: center;
-  }
-  
-  .tabs {
-    text-align: center;
-    margin-bottom: 15px;
-  }
-  
-  button {
-    margin: 5px;
-    padding: 8px 15px;
-    border: none;
-    background-color: #007bff;
-    color: white;
-    border-radius: 6px;
-  }
-  
-  table {
-    margin: auto;
-    border-collapse: collapse;
-  }
-  
-  td, th {
-    border: 1px solid #ccc;
-    padding: 6px 12px;
-  }
-  
-  footer {
-    text-align: center;
-    margin-top: 30px;
-    color: #888;
-  }
-  
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  background-color: #f3f8f3;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  width: 90%;
+  margin: 20px auto;
+}
+
+h1 {
+  text-align: center;
+  color: #1a5e2e;
+  margin-bottom: 10px;
+}
+
+.timestamp {
+  text-align: center;
+  font-size: 0.9em;
+  color: #777;
+  margin-bottom: 20px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-gap: 20px;
+}
+
+.card {
+  background: #e6f7e6;
+  border-radius: 12px;
+  padding: 15px 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.card h2 {
+  color: #1a5e2e;
+  border-bottom: 1px solid #bcd5b6;
+  padding-bottom: 8px;
+  margin-bottom: 10px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  text-align: left;
+  padding: 6px 8px;
+  border-bottom: 1px solid #ccc;
+}
+
+th {
+  background-color: #d8f5d8;
+}
+
+.quote-box {
+  background-color: #fff;
+  padding: 12px;
+  border-radius: 8px;
+  font-style: italic;
+  color: #2b4c2b;
+}

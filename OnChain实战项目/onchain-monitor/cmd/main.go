@@ -22,6 +22,8 @@ func main() {
 	e.GET("/api/prices", api.GetPrices)
 	e.GET("/api/system", api.GetSystemInfo)
 	e.GET("/api/quotes", api.GetRandomQuote)
+	// 新增
+	e.GET("/api/eth_top5", api.GetEthTop5)
 
 	port := 8080
 	fmt.Printf("✅ 服务已启动: http://localhost:%d\n", port)
