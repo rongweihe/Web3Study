@@ -19,4 +19,4 @@
 
 # 效果图
 
-![效果图](./web/static/img/onchain-png.png)
+![效果图](./onchain-monitor/web/static/img/onchain-png.png)
