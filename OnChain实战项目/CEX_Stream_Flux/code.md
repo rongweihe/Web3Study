@@ -1,11 +1,13 @@
 下面是一套可直接开干的最小可用（MVP）代码模板与脚手架。结构聚焦：Go 采集器（Binance/OKX WS + REST 回补）→ Kafka/Redpanda → Flink SQL 聚合 → ClickHouse DDL → Go API → 告警规则 → 配置样例。
 
+- project_name: CEX_Stream_Monitor 
+
 ---
 
 ## 目录结构
 
 ```
-.
+.CEX_Stream_Monitor
 ├── collector/
 │   ├── cmd/collector/main.go
 │   ├── go.mod
